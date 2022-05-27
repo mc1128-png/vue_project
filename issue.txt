@@ -1,0 +1,43 @@
+1.添加新教师时为什么不能用对象形式请求teacherForm，能获取到表中的数据:那后台数据就应该是req.body.teacherForm, 因为获取的数据本身就是一个对象
+2.为什么要引入两次request, 两个引入对应不同的函数request:#
+3.放置一段时间数据会消失:#
+4.清空表单，窗口加载出来，数据并没有会报错：this.$nextTick()它是一个异步事件，当渲染结束之后 ，它的回调函数才会被执行,弹出窗口打开之后 ，需要加载Dom, 就需要花费一点时间，我们就应该等待它加载完dom之后，再进行调用resetFields方法，重置表单和清除样式。
+5.为什么是req.body.id，数据库中是_id: id为前台页面的id，为发送请求接收的数据，teacher里面的接受类型._id为数据库中的id，提交到数据库中来修改数据库中的数据
+6.发送请求的数据:get拼接字符串地址返回一个对象，post请求的数据必须是一个对象形式，加上{}，如果本身就是对象就不用加{}
+    1）字符串形式
+    2）对象形式
+7.为什么获取不到数据库的数据？
+    传参顺序一定不能混乱，因为会导致数据对应不上
+8.为什么点查询就能获取到数据
+    因为searchMap是双向绑定输入框中的值，当输入框为空时，就默认添加所有属性来查询数据，如果有哪个属性就用那个属性来查询数据，也就是searchData
+9.新增走编辑bug
+    _id: null,将添加数据之后设置数据为空，防止未刷新添加数据为编辑，主要是_id = null
+10.多次点击:采用防抖解决
+    1）防抖：多次点击只保留最后一次，前边的调用函数会被停止
+    2）节流：设置一个时间戳，当前时间戳内不可再次调用函数
+     data() {
+        return {
+          timeout: null,
+          }
+      }
+     method: {
+        change() {
+            if(this.timeout){
+                clearTimeout(this.timeout)
+            }
+            this.timeout = setTimeout(() => {
+                this.func()调用函数
+            }, 500);
+        }
+    }
+11.加不进去数据
+    1）网络错误，等待
+    2）所需数据除了单位薪水都必填，避免输入数据
+12.user哪来的？
+        console.log(value) //为密码输入框中的值
+        console.log(user) // { "name": "a", "id": "61f20860bc931a0da5b01ba4" }
+        user: JSON.parse(localStorage.getItem("b0352-sms-user")),
+        localStorage.setItem("b0352-sms-user", JSON.stringify(respUser.data)) // JSON.stringify(respUser.data)为获取成功的数据
+        localStorage.setItem("b0352-sms-token", resp.data.token);
+13.数据未进行校验
+    未绑定rules
